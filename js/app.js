@@ -1,12 +1,19 @@
 let listaAmigos = [];
 
 function adicionar (){
-    listaAmigos.push(document.getElementById('nome-amigo').value);
     let amigosIncluidos = document.getElementById('lista-amigos');
 
-    amigosIncluidos.textContent = listaAmigos;
-
-    document.getElementById('nome-amigo').value = '';
+    if (document.getElementById('nome-amigo').value.trim() === ''){
+        alert('nome invalido');
+        document.getElementById('nome-amigo').value = '';
+    }else if (listaAmigos.includes(document.getElementById('nome-amigo').value) == true) {
+        alert('Já tem um amigo com esse nome incluido, favor especificar ou adicionar outro')
+        document.getElementById('nome-amigo').value = '';
+    } else{
+        listaAmigos.push(document.getElementById('nome-amigo').value);
+        amigosIncluidos.textContent = listaAmigos;
+        document.getElementById('nome-amigo').value = '';
+    }
 }
 
 function sortear(){
@@ -16,20 +23,22 @@ function sortear(){
     let resultado = [];
     listaSorteio.innerHTML = '';
 
-    while (listaAmigosaux.length != 0){
-        amigo1 = Math.floor(Math.random() * listaAmigosaux.length);
-        resultado.push(listaAmigosaux.splice(amigo1,1));
+    if (listaAmigosaux.length <= 1) {
+        alert('Não há amigos o suficiente para sortear');
+    }else{
+        while (listaAmigosaux.length != 0){
+            amigo1 = Math.floor(Math.random() * listaAmigosaux.length);
+            resultado.push(listaAmigosaux.splice(amigo1,1));
+        }
+    
+        for (i = 0; i < resultado.length; i++){
+            if (i == resultado.length-1 ) {
+                listaSorteio.innerHTML += `${resultado[i]} --> ${resultado[0]} <br>`;
+            }else{
+                listaSorteio.innerHTML += `${resultado[i]} --> ${resultado[i+1]} <br>`;
+            } 
+        }
     }
-
-    for (i = 0; i < resultado.length; i++){
-        if (i == resultado.length-1 ) {
-            listaSorteio.innerHTML += `${resultado[i]} --> ${resultado[0]} <br>`;
-        }else{
-            listaSorteio.innerHTML += `${resultado[i]} --> ${resultado[i+1]} <br>`;
-        } 
-    }
-
-
 }
 
 function reiniciar(){
